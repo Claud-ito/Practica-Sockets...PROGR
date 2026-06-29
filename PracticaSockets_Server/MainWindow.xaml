@@ -1,0 +1,264 @@
+﻿<Window x:Class="PracticaSockets_Server.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PracticaSockets_Server"
+        mc:Ignorable="d"
+        xmlns:vm="clr-namespace:PracticaSockets_Server.ViewModel"
+        xmlns:conv="clr-namespace:PracticaSockets_Server.Converters"
+                WindowStartupLocation="CenterScreen"
+                Background="#1E1E2E"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Window.DataContext>
+        <vm:MainViewModel></vm:MainViewModel>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <conv:BoolToBrushConverter x:Key="BoolToBrush"/>
+        <conv:InverseBoolConverter x:Key="InverseBool"/>
+
+        <!-- Estilo de botón reutilizable -->
+        <Style x:Key="Btn" TargetType="Button">
+            <Setter Property="Foreground"      Value="#1E1E2E"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding"         Value="11,5"/>
+            <Setter Property="FontSize"        Value="11"/>
+            <Setter Property="FontWeight"      Value="SemiBold"/>
+            <Setter Property="Cursor"          Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.78"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.28"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="22">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ── Encabezado ──────────────────────────────────────────────────── -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,18">
+            <TextBlock Text="Panel de Control · Servidor"
+                       FontSize="22" FontWeight="Bold" Foreground="#CDD6F4"/>
+            <TextBlock FontSize="12" Foreground="#6C7086">
+                <Run Text="IP Local: "/>
+                <Run Text="{Binding LocalIp}" Foreground="#89DCEB" FontWeight="Bold"/>
+                <Run Text="     Clientes en chat: "/>
+                <Run Text="{Binding ConnectedClients}" Foreground="#A6E3A1" FontWeight="Bold"/>
+            </TextBlock>
+        </StackPanel>
+
+        <!-- ── Cuerpo ─────────────────────────────────────────────────────── -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="420"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Lista de servicios -->
+            <StackPanel Grid.Column="0" Margin="0,0,16,0">
+
+                <!-- Tab 1 y 2: TCP Básico -->
+                <Border Background="#313244" CornerRadius="8" Padding="14,12" Margin="0,0,0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Width="10" Height="10" Margin="0,0,12,0" VerticalAlignment="Center"
+                                 Fill="{Binding BasicRunning, Converter={StaticResource BoolToBrush}}"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="TCP Básico · Tabs 1 y 2" Foreground="#CDD6F4"
+                                       FontSize="12" FontWeight="Medium"/>
+                            <TextBlock Text="Puerto 8880 · Configuración + Async"
+                                       Foreground="#585B70" FontSize="11"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <Button Content="Iniciar" Background="#A6E3A1" Style="{StaticResource Btn}"
+                                    Command="{Binding StartBasicCommand}"
+                                    IsEnabled="{Binding BasicRunning, Converter={StaticResource InverseBool}}"/>
+                            <Button Content="Parar" Background="#F38BA8" Style="{StaticResource Btn}"
+                                    Margin="6,0,0,0" Command="{Binding StopBasicCommand}"
+                                    IsEnabled="{Binding BasicRunning}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Tab 3: Multi-Hilos -->
+                <Border Background="#313244" CornerRadius="8" Padding="14,12" Margin="0,0,0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Width="10" Height="10" Margin="0,0,12,0" VerticalAlignment="Center"
+                                 Fill="{Binding MultiThreadRunning, Converter={StaticResource BoolToBrush}}"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Multi-Hilos · Tab 3" Foreground="#CDD6F4"
+                                       FontSize="12" FontWeight="Medium"/>
+                            <TextBlock Text="Puerto 8882 · Thread · ThreadPool · Task"
+                                       Foreground="#585B70" FontSize="11"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <Button Content="Iniciar" Background="#A6E3A1" Style="{StaticResource Btn}"
+                                    Command="{Binding StartMultiThreadCommand}"
+                                    IsEnabled="{Binding MultiThreadRunning, Converter={StaticResource InverseBool}}"/>
+                            <Button Content="Parar" Background="#F38BA8" Style="{StaticResource Btn}"
+                                    Margin="6,0,0,0" Command="{Binding StopMultiThreadCommand}"
+                                    IsEnabled="{Binding MultiThreadRunning}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Tab 4: Archivos -->
+                <Border Background="#313244" CornerRadius="8" Padding="14,12" Margin="0,0,0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Width="10" Height="10" Margin="0,0,12,0" VerticalAlignment="Center"
+                                 Fill="{Binding FileServerRunning, Converter={StaticResource BoolToBrush}}"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Transmisión de Archivos · Tab 4" Foreground="#CDD6F4"
+                                       FontSize="12" FontWeight="Medium"/>
+                            <TextBlock Text="Puerto 8883 · Binario · Chunks 32 KB"
+                                       Foreground="#585B70" FontSize="11"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <Button Content="Iniciar" Background="#A6E3A1" Style="{StaticResource Btn}"
+                                    Command="{Binding StartFileServerCommand}"
+                                    IsEnabled="{Binding FileServerRunning, Converter={StaticResource InverseBool}}"/>
+                            <Button Content="Parar" Background="#F38BA8" Style="{StaticResource Btn}"
+                                    Margin="6,0,0,0" Command="{Binding StopFileServerCommand}"
+                                    IsEnabled="{Binding FileServerRunning}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Tab 5: SSL -->
+                <Border Background="#313244" CornerRadius="8" Padding="14,12" Margin="0,0,0,8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Width="10" Height="10" Margin="0,0,12,0" VerticalAlignment="Center"
+                                 Fill="{Binding SslRunning, Converter={StaticResource BoolToBrush}}"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="SSL / TLS · Tab 5" Foreground="#CDD6F4"
+                                       FontSize="12" FontWeight="Medium"/>
+                            <TextBlock Text="Puerto 8884 · SslStream · Certificado auto-firmado"
+                                       Foreground="#585B70" FontSize="11"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <Button Content="Iniciar" Background="#A6E3A1" Style="{StaticResource Btn}"
+                                    Command="{Binding StartSslCommand}"
+                                    IsEnabled="{Binding SslRunning, Converter={StaticResource InverseBool}}"/>
+                            <Button Content="Parar" Background="#F38BA8" Style="{StaticResource Btn}"
+                                    Margin="6,0,0,0" Command="{Binding StopSslCommand}"
+                                    IsEnabled="{Binding SslRunning}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Tab 6: Chat -->
+                <Border Background="#313244" CornerRadius="8" Padding="14,12" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Width="10" Height="10" Margin="0,0,12,0" VerticalAlignment="Center"
+                                 Fill="{Binding ChatRunning, Converter={StaticResource BoolToBrush}}"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Text="Chat en Línea · Tab 6" Foreground="#CDD6F4"
+                                       FontSize="12" FontWeight="Medium"/>
+                            <TextBlock Text="Puerto 8885 · Multi-cliente · Broadcast"
+                                       Foreground="#585B70" FontSize="11"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                            <Button Content="Iniciar" Background="#A6E3A1" Style="{StaticResource Btn}"
+                                    Command="{Binding StartChatCommand}"
+                                    IsEnabled="{Binding ChatRunning, Converter={StaticResource InverseBool}}"/>
+                            <Button Content="Parar" Background="#F38BA8" Style="{StaticResource Btn}"
+                                    Margin="6,0,0,0" Command="{Binding StopChatCommand}"
+                                    IsEnabled="{Binding ChatRunning}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Iniciar / Detener todos -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="▶  Iniciar Todos" Background="#A6E3A1" Style="{StaticResource Btn}"
+                            Padding="16,8" Command="{Binding StartAllCommand}"/>
+                    <Button Content="■  Detener Todos" Background="#F38BA8" Style="{StaticResource Btn}"
+                            Padding="16,8" Margin="8,0,0,0" Command="{Binding StopAllCommand}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Panel de log -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="0" Margin="0,0,0,10">
+                    <TextBlock Text="LOG DE EVENTOS" Foreground="#6C7086"
+                               FontSize="11" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <Button Content="Limpiar" DockPanel.Dock="Right"
+                            Style="{StaticResource Btn}" Background="#45475A" Foreground="#CDD6F4"
+                            Command="{Binding ClearLogCommand}"/>
+                </DockPanel>
+
+                <Border Grid.Row="1" Background="#181825" CornerRadius="8">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding LogEntries}" Margin="14">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontFamily="Consolas"
+                                               FontSize="12" Foreground="#A6E3A1"
+                                               TextWrapping="Wrap" Margin="0,2"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- ── Pie ────────────────────────────────────────────────────────── -->
+        <Border Grid.Row="2" Background="#313244" CornerRadius="6"
+                Padding="14,8" Margin="0,14,0,0">
+            <TextBlock HorizontalAlignment="Center" FontSize="11" Foreground="#585B70"
+                       Text="Levanta los servicios antes de ejecutar el Cliente · Cada tab usa su propio puerto"/>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nuevo perfil",
+    "Projects": [
+      {
+        "Path": "PracticaSockets_Server\\PracticaSockets_Server.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "PracticaSockets_Client\\PracticaSockets_Client.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

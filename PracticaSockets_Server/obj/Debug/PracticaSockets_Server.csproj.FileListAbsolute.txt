@@ -1,0 +1,8 @@
+C:\Users\saidd\Desktop\PracticaSockets\PracticaSockets_Server\obj\Debug\PracticaSockets_Server.csproj.AssemblyReference.cache
+C:\Users\saidd\Desktop\PracticaSockets\PracticaSockets_Server\obj\Debug\PracticaSockets_Server.csproj.SuggestedBindingRedirects.cache
+C:\Users\saidd\Desktop\PracticaSockets\PracticaSockets_Server\obj\Debug\PracticaSockets_Server.exe.config
+C:\Users\saidd\Desktop\PracticaSockets\PracticaSockets_Server\obj\Debug\MainWindow.g.cs
+C:\Users\saidd\Desktop\PracticaSockets\PracticaSockets_Server\obj\Debug\App.g.cs
+C:\Users\saidd\Desktop\PracticaSockets\PracticaSockets_Server\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\saidd\Desktop\PracticaSockets\PracticaSockets_Server\obj\Debug\PracticaSockets_Server_MarkupCompile.cache
+C:\Users\saidd\Desktop\PracticaSockets\PracticaSockets_Server\obj\Debug\PracticaSockets_Server_MarkupCompile.lref

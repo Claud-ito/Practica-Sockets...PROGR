@@ -1,0 +1,47 @@
+<UserControl x:Class="PracticaSockets_Client.Views.Tabs.Tab4_Archivos"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="#1E1E2E" Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Transferencia de Archivos (Binary/Chunks)" Foreground="#CDD6F4" FontSize="22" FontWeight="Bold" Margin="0,0,0,20"/>
+
+        <StackPanel Grid.Row="1" Margin="0,0,0,20">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                <Button Content="Seleccionar Archivo" Command="{Binding BrowseFileCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}, FallbackValue=True}" Background="#89B4FA" Foreground="#11111B" FontWeight="Bold" BorderThickness="0" Padding="15,8" Cursor="Hand" Margin="0,0,15,0">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <TextBlock Text="{Binding SelectedFileName}" Foreground="#A6ADC8" VerticalAlignment="Center" Margin="0,0,20,0"/>
+
+                <Button Content="Enviar al Servidor" Command="{Binding SendFileCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}, FallbackValue=True}" Background="#A6E3A1" Foreground="#11111B" FontWeight="Bold" BorderThickness="0" Padding="15,8" Cursor="Hand">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+
+            <Grid>
+                <ProgressBar Value="{Binding Progress}" Maximum="100" Height="20" Foreground="#F9E2AF" Background="#313244"/>
+                <TextBlock Text="{Binding ProgressText}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#11111B" FontWeight="Bold"/>
+            </Grid>
+        </StackPanel>
+
+        <Border Grid.Row="2" Background="#11111B" CornerRadius="8" Padding="15">
+            <TextBlock Text="{Binding Log}" Foreground="#89B4FA" TextWrapping="Wrap" FontFamily="Consolas"/>
+        </Border>
+    </Grid>
+</UserControl>
